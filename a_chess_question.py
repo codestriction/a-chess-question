@@ -10,6 +10,7 @@
 #    - Once at least one black piece has been added, the user can type "done"
 #      to stop adding more black pieces.
 #
+#
 # 3. Input validation:
 #    - Assume inputs are either "done" or in the correct format ("<piece> <position>").
 #    - Position must be within valid chess coordinates (a-h, 1-8).
@@ -53,15 +54,19 @@ def is_position_valid(pos):
 
 # Game related functions
 def get_piece_and_its_coordinates(type, black_pieces = (), white_coordinates = None):
-    # type is can either be 'white' or 'black'
+    # type can either be 'white' or 'black'
     while True:
         formatted_user_input = input(f"Input your {type} piece and its position (example: rook a5): ")
 
         # 'black'-specific if block
+        if type == 'black' and len(black_pieces) == 16:
+            print ("You have reached the limit allowed for black pieces")
+            return '', ''
         if type == 'black' and formatted_user_input == "done":
             if len(black_pieces) == 0:
                 print("You must add at least 1 black piece")
                 continue
+
             # Returning empty piece and empty coordinates when user is done
             # This is done so that you can check
             return '', ''
@@ -83,7 +88,6 @@ def get_piece_and_its_coordinates(type, black_pieces = (), white_coordinates = N
         if not is_position_valid(position):
             print ("Invalid coordinates. Use positions from a1 to h8.")
             continue
-
 
         # Coordinates do not require addl' validation because the position is already valid
         coordinates = get_coordinates_from_position(position)
